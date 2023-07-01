@@ -27,6 +27,9 @@ class Project
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
+    #[ORM\OneToOne(mappedBy: 'project_id', cascade: ['persist', 'remove'])]
+    private ?Review $review = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -76,6 +79,23 @@ class Project
     public function setTitle(string $title): static
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function getReview(): ?Review
+    {
+        return $this->review;
+    }
+
+    public function setReview(Review $review): static
+    {
+        // set the owning side of the relation if necessary
+        if ($review->getProjectId() !== $this) {
+            $review->setProjectId($this);
+        }
+
+        $this->review = $review;
 
         return $this;
     }
