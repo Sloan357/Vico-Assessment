@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ProjectRepository;
+use DateTime;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -26,9 +27,6 @@ class Project
 
     #[ORM\Column(length: 255)]
     private ?string $title = null;
-
-    #[ORM\OneToOne(mappedBy: 'project_id', cascade: ['persist', 'remove'])]
-    private ?Review $review = null;
 
     public function getId(): ?int
     {
@@ -64,11 +62,9 @@ class Project
         return $this->created;
     }
 
-    public function setCreated(\DateTimeInterface $created): static
+    public function setCreated(): void
     {
-        $this->created = $created;
-
-        return $this;
+        $this->created = new DateTime('now');
     }
 
     public function getTitle(): ?string
@@ -79,23 +75,6 @@ class Project
     public function setTitle(string $title): static
     {
         $this->title = $title;
-
-        return $this;
-    }
-
-    public function getReview(): ?Review
-    {
-        return $this->review;
-    }
-
-    public function setReview(Review $review): static
-    {
-        // set the owning side of the relation if necessary
-        if ($review->getProjectId() !== $this) {
-            $review->setProjectId($this);
-        }
-
-        $this->review = $review;
 
         return $this;
     }

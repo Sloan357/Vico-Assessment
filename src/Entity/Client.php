@@ -2,11 +2,10 @@
 
 namespace App\Entity;
 
-use App\Repository\ClientRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use DateTime;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ClientRepository;
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
 class Client
@@ -30,17 +29,6 @@ class Client
 
     #[ORM\Column(length: 96)]
     private ?string $last_name = null;
-
-    #[ORM\OneToMany(mappedBy: 'creator_id', targetEntity: Project::class, orphanRemoval: true)]
-    private Collection $projects;
-
-    #[ORM\OneToOne(mappedBy: 'creator_id', cascade: ['persist', 'remove'])]
-    private ?Review $review = null;
-
-    public function __construct()
-    {
-        $this->projects = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -76,11 +64,9 @@ class Client
         return $this->created;
     }
 
-    public function setCreated(\DateTimeInterface $created): static
+    public function setCreated(): void
     {
-        $this->created = $created;
-
-        return $this;
+        $this->created = new DateTime('now');
     }
 
     public function getFirstName(): ?string
@@ -103,53 +89,6 @@ class Client
     public function setLastName(string $last_name): static
     {
         $this->last_name = $last_name;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Project>
-     */
-    public function getProjects(): Collection
-    {
-        return $this->projects;
-    }
-
-    public function addProject(Project $project): static
-    {
-        if (!$this->projects->contains($project)) {
-            $this->projects->add($project);
-            $project->setCreatorId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProject(Project $project): static
-    {
-        if ($this->projects->removeElement($project)) {
-            // set the owning side to null (unless already changed)
-            if ($project->getCreatorId() === $this) {
-                $project->setCreatorId(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getReview(): ?Review
-    {
-        return $this->review;
-    }
-
-    public function setReview(Review $review): static
-    {
-        // set the owning side of the relation if necessary
-        if ($review->getCreatorId() !== $this) {
-            $review->setCreatorId($this);
-        }
-
-        $this->review = $review;
 
         return $this;
     }

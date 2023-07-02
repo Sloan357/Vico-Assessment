@@ -2,9 +2,10 @@
 
 namespace App\Entity;
 
-use App\Repository\ReviewRepository;
+use DateTime;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ReviewRepository;
 
 #[ORM\Entity(repositoryClass: ReviewRepository::class)]
 class Review
@@ -90,11 +91,9 @@ class Review
         return $this->created;
     }
 
-    public function setCreated(\DateTimeInterface $created): static
+    public function setCreated(): void
     {
-        $this->created = $created;
-
-        return $this;
+        $this->created = new DateTime('now');
     }
 
     public function getOverallRating(): ?int
