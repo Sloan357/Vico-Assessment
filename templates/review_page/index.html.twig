@@ -1,18 +1,42 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+{% block stylesheets %}
+            {{ encore_entry_link_tags('app_review_page') }}
+{% endblock %}
 
-<div class="example-wrapper">
-    <h1>Your review of Cirle Design</h1>
+{% block body %}
+
+<div class="form-wrapper">
+    <h2>Your review of {{ vicoName }}</h2>
 
     <p>
-        Please review the work done by test for the project "test":
+        Please review the work done by test for the project <br>
+        "{{ projectTitle }}":
     </p>
 
-    {{ form(form) }}
+    {{ form_start(form) }}
+
+    <div class="star-rating">
+        {{ form_label(form.overall_rating) }}
+        <div>
+            {% for i in 1..5 %}
+                <span data-value="{{ i }}" class="star"></span>
+            {% endfor %}
+        </div>
+        <div class="rating-grade">
+        </div>
+    </div>
+
+    {{ form_widget(form.overall_rating, { 'id': 'rating_value' }) }}
+    {{ form_errors(form.overall_rating) }}
+
+    <div class="short-review">
+        {{ form_row(form.short_review, {'attr': {'placeholder': 'Write one or two sentences about your experience working with ' ~ vicoName}})}}
+    </div>
+    {{ form_end(form) }}
+    <div class="page-index"> 
+    1/2 
+    
+    </div>
 </div>
 {% endblock %}

@@ -37,6 +37,7 @@ class ReviewPageController extends AbstractController
         // $em->flush();
 
         $vicoRepo = $em->getRepository(Vico::class);
+        $vicoName = $vicoRepo->findOneBy(['id' => '1'])->getName();
 
         // $project = new Project();
         // $project->setCreatorId($clientRepo->findOneBy(['id' => 1]))
@@ -48,6 +49,7 @@ class ReviewPageController extends AbstractController
         // $em->flush();
 
         $projectRepo = $em->getRepository(Project::class);
+        $projectTitle = $projectRepo->findOneBy(['id' => '1'])->getTitle();
 
 
         $review = new Review();
@@ -64,6 +66,8 @@ class ReviewPageController extends AbstractController
 
         return $this->render('review_page/index.html.twig', [
             'form' => $form,
+            'vicoName' => $vicoName,
+            'projectTitle' => $projectTitle
         ]);
     }
 }

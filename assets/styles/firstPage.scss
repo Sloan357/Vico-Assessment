@@ -1,3 +1,72 @@
 body {
-    background-color: red;
+    background-color: lightgrey;
+
+    .form-wrapper {
+        max-width: 500px;
+        background-color: white;
+        padding: 15px;
+        margin: auto;
+        box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+
+        h2 {
+            font-weight: 500;
+            font-size: 25px;
+            margin-top: 0;
+        }
+    
+        p {
+            font-size: 16px;
+        }
+
+        form {
+            text-align: center;
+
+            .star-rating {
+                margin-top: 40px;
+                margin-bottom: 30px;
+
+                label {
+                    font-weight: 600;
+                }
+            }
+        
+            #rating_value {
+                display: none;
+            }
+        
+            .star {
+                background-image: url("/public/images/blank-star.png");
+                width: 45px;
+                height: 45px;
+                display: inline-flex;
+            }
+
+            .short-review div {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+
+                #review_short_review {
+                    width: 490px;
+                    height: 70px;
+                    border-color: lightgrey;
+                    margin-top: 10px;
+                    margin-bottom: 20px;
+                }
+            }
+
+            button {
+                width: 500px;
+                border: none;
+                height: 30px;
+                border-radius: 4px;
+                background-color: blueviolet;
+                color: white;
+            }
+        }
+    }
+    .page-index {
+        text-align: center;
+        margin-top: 15px;
+    }
 }

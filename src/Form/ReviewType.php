@@ -4,9 +4,9 @@ namespace App\Form;
 
 use App\Entity\Review;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\RangeType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
@@ -15,15 +15,18 @@ class ReviewType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('overall_rating', RangeType::class, [
+            ->add('overall_rating', ChoiceType::class, [
                 'label' => 'Overall Satisfaction',
-                'attr' => [
-                    'Bad' => 1,
-                    'Excellent' => 5
+                'choices' => [
+                    '1' => 1,
+                    '2' => 2,
+                    '3' => 3,
+                    '4' => 4,
+                    '5' => 5
                 ],
             ])
             ->add('short_review', TextareaType::class, [
-                'label' => 'Please add a short review'
+                'label' => 'Please add a short review',
             ])
             // ->add('communication_rating', RangeType::class, [
             //     'attr' => [
