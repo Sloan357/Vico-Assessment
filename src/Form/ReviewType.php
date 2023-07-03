@@ -27,6 +27,9 @@ class ReviewType extends AbstractType
             ])
             ->add('short_review', TextareaType::class, [
                 'label' => 'Please add a short review',
+                'attr' => [
+                    'class' => 'review-text-area'
+                ]
             ])
             // ->add('communication_rating', RangeType::class, [
             //     'attr' => [

@@ -28,19 +28,23 @@ body {
                 label {
                     font-weight: 600;
                 }
+
+                .star {
+                    background-image: url("/public/images/blank-star.png");
+                    width: 45px;
+                    height: 45px;
+                    display: inline-flex;
+                }
+
+                .selected {
+                    background-image: url("/public/images/filled-star.png");
+                }
             }
         
             #rating_value {
                 display: none;
             }
         
-            .star {
-                background-image: url("/public/images/blank-star.png");
-                width: 45px;
-                height: 45px;
-                display: inline-flex;
-            }
-
             .short-review div {
                 display: flex;
                 flex-direction: column;
@@ -51,8 +55,13 @@ body {
                     height: 70px;
                     border-color: lightgrey;
                     margin-top: 10px;
-                    margin-bottom: 20px;
                 }
+            }
+
+            #charCounter {
+                text-align: right;
+                font-size: 12px;
+                margin-bottom: 20px;
             }
 
             button {

@@ -4,6 +4,11 @@
             {{ encore_entry_link_tags('app_review_page') }}
 {% endblock %}
 
+{% block javascripts %}
+    {{ encore_entry_script_tags('review_page') }}
+{% endblock %}
+
+
 {% block body %}
 
 <div class="form-wrapper">
@@ -33,10 +38,12 @@
     <div class="short-review">
         {{ form_row(form.short_review, {'attr': {'placeholder': 'Write one or two sentences about your experience working with ' ~ vicoName}})}}
     </div>
+    <div id="charCounter">
+        0/1000
+    </div>
     {{ form_end(form) }}
     <div class="page-index"> 
     1/2 
-    
     </div>
 </div>
 {% endblock %}
