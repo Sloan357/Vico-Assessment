@@ -30,3 +30,11 @@ The Review entity has been put in relation with all three previously mentioned e
  -for the second page, the review is queried in a direct manner, however in reall SAAS it will be taking all the data required from the session login  
  -same as in the first page, the form is rendered based on the OptionalReviewType.php, validated when submitted and flushed
  -the skip button redirects to the success page where the review and optional review are dumped for testing and proof of success, in production ideally it would redirect to the review (viewing) page
+
+The Tests
+-
+
+-successfull http 'GET' request(200)  
+-successfull form submission with valid data  
+-failed form submission with no data
+-formSubmission with exception for passing data of the wrong format or type
