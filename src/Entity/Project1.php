@@ -2,24 +2,24 @@
 
 namespace App\Entity;
 
-use App\Repository\ProjectRepository;
 use DateTime;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\Project1Repository;
 
-#[ORM\Entity(repositoryClass: ProjectRepository::class)]
-class Project
+#[ORM\Entity(repositoryClass: Project1Repository::class)]
+class Project1
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'projects')]
+    #[ORM\ManyToOne(inversedBy: 'project1s')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Client $creator_id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'projects')]
+    #[ORM\ManyToOne(inversedBy: 'project1s')]
     private ?Vico $vico_id = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -27,6 +27,9 @@ class Project
 
     #[ORM\Column(length: 255)]
     private ?string $title = null;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?Review $review = null;
 
     public function getId(): ?int
     {
@@ -75,6 +78,18 @@ class Project
     public function setTitle(string $title): static
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function getReview(): ?Review
+    {
+        return $this->review;
+    }
+
+    public function setReview(?Review $review): static
+    {
+        $this->review = $review;
 
         return $this;
     }

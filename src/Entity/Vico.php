@@ -6,6 +6,8 @@ use DateTime;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\VicoRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: VicoRepository::class)]
 class Vico
@@ -20,6 +22,15 @@ class Vico
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $created = null;
+
+    #[ORM\OneToMany(mappedBy: 'vico_id', targetEntity: Project1::class)]
+    private Collection $project1s;
+
+    public function __construct()
+    {
+        $this->project1s = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -46,5 +57,35 @@ class Vico
     public function setCreated(): void
     {
         $this->created = new DateTime('now');
+    }
+
+    /**
+     * @return Collection<int, Project1>
+     */
+    public function getProject1s(): Collection
+    {
+        return $this->project1s;
+    }
+
+    public function addProject1(Project1 $project1): static
+    {
+        if (!$this->project1s->contains($project1)) {
+            $this->project1s->add($project1);
+            $project1->setVicoId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProject1(Project1 $project1): static
+    {
+        if ($this->project1s->removeElement($project1)) {
+            // set the owning side to null (unless already changed)
+            if ($project1->getVicoId() === $this) {
+                $project1->setVicoId(null);
+            }
+        }
+
+        return $this;
     }
 }

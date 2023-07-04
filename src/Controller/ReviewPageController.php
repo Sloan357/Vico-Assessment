@@ -3,11 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Client;
-use App\Entity\Project;
+use App\Entity\Project1;
 use App\Entity\Review;
 use App\Entity\Vico;
 use App\Form\ReviewType;
-use DateTime;
+use App\Manager\ReviewManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,41 +16,50 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ReviewPageController extends AbstractController
 {
+    private ReviewManager $reviewManager;
+    public function __construct(ReviewManager $reviewManager)
+    {
+        $this->reviewManager = $reviewManager;
+    }
+
+
     #[Route('/review/page', name: 'app_review_page')]
     public function index(Request $request, EntityManagerInterface $em): Response
     {
-        // $client = new Client();
-        // $client->setUsername('afifelcharif@gmail.com')
-        //     ->setPassword('password')
-        //     ->setFirstName('Afif')
-        //     ->setLastName('El Charif')
-        //     ->setCreated();
-        // $em->persist($client);
-        // $em->flush();
-
         $clientRepo = $em->getRepository(Client::class);
 
-        // $vico = new Vico();
-        // $vico->setName('John')
-        // ->setCreated();
-        // $em->persist($vico);
-        // $em->flush();
-
         $vicoRepo = $em->getRepository(Vico::class);
+
+        $projectRepo = $em->getRepository(Project1::class);
+
+        if (!$clientRepo->findAll()) {
+            $this->reviewManager->createNewClient($em);
+            // var_dump('client created');
+        }
+
+        if (!$vicoRepo->findAll()) {
+            $this->reviewManager->createNewVico($em);
+            // var_dump('vico created');
+        }
+
+        if (!$projectRepo->findAll()) {
+            $this->reviewManager->createNewProject($em, $clientRepo, $vicoRepo);
+            // var_dump('project created');
+        }
+        //the code far is due to the task being a challenge and not part of a full workflow, this would be replaced
+        //by retrieving the client, vico and project info from the DB and session leading to the review page
+        
+
         $vicoName = $vicoRepo->findOneBy(['id' => '1'])->getName();
-
-        // $project = new Project();
-        // $project->setCreatorId($clientRepo->findOneBy(['id' => 1]))
-        //     ->setVicoId($vicoRepo->findOneBy(['id' => 1]))
-        //     ->setTitle('Build a site with appointment functionality linked to Shopify')
-        //     ->setCreated();
-
-        // $em->persist($project);
-        // $em->flush();
-
-        $projectRepo = $em->getRepository(Project::class);
         $projectTitle = $projectRepo->findOneBy(['id' => '1'])->getTitle();
 
+        // $reviewRepo = $em->getRepository(Review::class);
+
+        // if ($reviewRepo->find('1')) {
+        //     // $review = $reviewRepo->findOneBy(['project_id' => '1']);
+        //     var_dump($projectRepo->findOneBy(['id' => '1']));die();
+        // } else {
+        // }
 
         $review = new Review();
         $form = $this->createForm(ReviewType::class, $review);
@@ -58,10 +67,17 @@ class ReviewPageController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $review = $form->getData();
+            $review->setCreatorId($clientRepo->findOneBy(['id' => 1]))
+                ->setVicoId($vicoRepo->findOneBy(['id' => 1]))
+                ->setProjectId($projectRepo->findOneBy(['id' => '1']))
+                ->setCreated();
+            
+                $em->persist($review);
+                $em->flush();
 
             // ... perform some action
 
-            return $this->redirectToRoute('task_success');
+            return $this->redirectToRoute('app_review_second_page');
         }
 
         return $this->render('review_page/index.html.twig', [
@@ -69,5 +85,11 @@ class ReviewPageController extends AbstractController
             'vicoName' => $vicoName,
             'projectTitle' => $projectTitle
         ]);
+    }
+
+    #[Route('/review/second-page', name: 'app_review_second_page')]
+    public function secondPage(Request $request, EntityManagerInterface $em): Response
+    {
+        var_dump('yo');die();
     }
 }

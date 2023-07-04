@@ -17,7 +17,7 @@ class Review
 
     #[ORM\OneToOne(inversedBy: 'review', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Project $project_id = null;
+    private ?Project1 $project_id = null;
 
     #[ORM\OneToOne(inversedBy: 'review', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
@@ -50,12 +50,12 @@ class Review
         return $this->id;
     }
 
-    public function getProjectId(): ?Project
+    public function getProjectId(): ?Project1
     {
         return $this->project_id;
     }
 
-    public function setProjectId(Project $project_id): static
+    public function setProjectId(Project1 $project_id): static
     {
         $this->project_id = $project_id;
 
