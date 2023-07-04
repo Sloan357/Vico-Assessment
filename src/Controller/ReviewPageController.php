@@ -54,9 +54,8 @@ class ReviewPageController extends AbstractController
 
         $reviewRepo = $em->getRepository(Review::class);
 
-        if ($reviewRepo->find('1')) {
-            // $review = $reviewRepo->findOneBy(['project_id' => '1']);
-            var_dump($projectRepo->findOneBy(['id' => '1']));die();
+        if ($reviewRepo->findOneBy(['project_id' => '1'])) {
+            $review = $reviewRepo->findOneBy(['project_id' => '1']);
         } else {
             $review = new Review();
         }
@@ -68,7 +67,7 @@ class ReviewPageController extends AbstractController
             $review = $form->getData();
             $review->setCreatorId($clientRepo->findOneBy(['id' => 1]))
                 ->setVicoId($vicoRepo->findOneBy(['id' => 1]))
-                ->setProjectId($projectRepo->findOneBy(['id' => '1']))
+                ->setProjectId($projectRepo->findOneBy(['id' => 1]))
                 ->setCreated();
             
                 $em->persist($review);
@@ -98,7 +97,13 @@ class ReviewPageController extends AbstractController
       
         $review = $reviewRepo->findOneBy(['id' => 1]);
 
-        $optionalReview = new OptionalReview;
+        $optionalReviewRepo = $em->getRepository(OptionalReview::class);
+
+        if ($optionalReviewRepo->findOneBy(['review' => $review])) {
+            $optionalReview = $optionalReviewRepo->findOneBy(['review' => $review]);
+        } else {
+            $optionalReview = new OptionalReview;
+        }
         
         $form = $this->createForm(OptionalReviewType::class, $optionalReview);
 
@@ -110,6 +115,9 @@ class ReviewPageController extends AbstractController
                 $em->persist($optionalReview);
                 $em->flush();
 
+                dump($review);
+                dump($optionalReview);
+                die();
             // return $this->redirectToRoute('app_review_second_page');
         }
 

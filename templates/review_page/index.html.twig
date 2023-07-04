@@ -21,19 +21,23 @@
 
     {{ form_start(form) }}
 
-    <div class="star-rating">
-        {{ form_label(form.overall_rating) }}
-        <div>
-            {% for i in 1..5 %}
-                <span data-value="{{ i }}" class="star"></span>
-            {% endfor %}
+    <div class="star-rating-container">
+        <div class="star-rating">
+            {{ form_label(form.overall_rating) }}
+            <div>
+                {% for i in 1..5 %}
+                    <span data-value="{{ i }}" class="star"></span>
+                {% endfor %}
+            </div>
+            <div class="rating-grade">
+            </div>
         </div>
-        <div class="rating-grade">
-        </div>
+
+        {{ form_widget(form.overall_rating, { 'id': 'rating_value' }) }}
+        {{ form_errors(form.overall_rating) }}
     </div>
 
-    {{ form_widget(form.overall_rating, { 'id': 'rating_value' }) }}
-    {{ form_errors(form.overall_rating) }}
+    
 
     <div class="short-review">
         {{ form_row(form.short_review, {'attr': {'placeholder': 'Write one or two sentences about your experience working with ' ~ vicoName}})}}

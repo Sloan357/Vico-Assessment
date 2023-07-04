@@ -23,50 +23,56 @@
 
     {{ form_start(form) }}
 
-    <div class="star-rating">
-        {{ form_label(form.communication_rating) }}
-        <p class="rating-question">How responsive was the Vico throughout the duration of the project?</p>
-        <div>
-            {% for i in 1..5 %}
-                <span data-value="{{ i }}" class="star"></span>
-            {% endfor %}
+    <div class="star-rating-container">
+        <div class="star-rating">
+            {{ form_label(form.communication_rating) }}
+            <p class="rating-question">How responsive was the Vico throughout the duration of the project?</p>
+            <div>
+                {% for i in 1..5 %}
+                    <span data-value="{{ i }}" class="star"></span>
+                {% endfor %}
+            </div>
+            <div class="rating-grade">
+            </div>
         </div>
-        <div class="rating-grade">
-        </div>
+
+        {{ form_widget(form.communication_rating, { 'id': 'rating_value' }) }}
+        {{ form_errors(form.communication_rating) }}
     </div>
 
-    {{ form_widget(form.communication_rating, { 'id': 'rating_value' }) }}
-    {{ form_errors(form.communication_rating) }}
+    <div class="star-rating-container">
+        <div class="star-rating">
+            {{ form_label(form.quality_rating) }}
+            <p class="rating-question">How satisfied are you with the deliverables provided by the Vico?</p>
+            <div>
+                {% for i in 1..5 %}
+                    <span data-value="{{ i }}" class="star"></span>
+                {% endfor %}
+            </div>
+            <div class="rating-grade">
+            </div>
+        </div>
 
-    <div class="star-rating">
-        {{ form_label(form.quality_rating) }}
-        <p class="rating-question">How satisfied are you with the deliverables provided by the Vico?</p>
-        <div>
-            {% for i in 1..5 %}
-                <span data-value="{{ i }}" class="star"></span>
-            {% endfor %}
-        </div>
-        <div class="rating-grade">
-        </div>
+        {{ form_widget(form.quality_rating, { 'id': 'rating_value' }) }}
+        {{ form_errors(form.quality_rating) }}
     </div>
+    
 
-    {{ form_widget(form.quality_rating, { 'id': 'rating_value' }) }}
-    {{ form_errors(form.quality_rating) }}
-
-    <div class="star-rating">
-        {{ form_label(form.value_rating) }}
-        <p class="rating-question">How satisfied are you with the pricing of this project compared to the work delivered?</p>
-        <div>
-            {% for i in 1..5 %}
-                <span data-value="{{ i }}" class="star"></span>
-            {% endfor %}
+    <div class="star-rating-container">
+        <div class="star-rating">
+            {{ form_label(form.value_rating) }}
+            <p class="rating-question">How satisfied are you with the pricing of this project compared to the work delivered?</p>
+            <div>
+                {% for i in 1..5 %}
+                    <span data-value="{{ i }}" class="star"></span>
+                {% endfor %}
+            </div>
+            <div class="rating-grade">
+            </div>
         </div>
-        <div class="rating-grade">
-        </div>
+        {{ form_widget(form.value_rating, { 'id': 'rating_value' }) }}
+        {{ form_errors(form.value_rating) }}
     </div>
-
-    {{ form_widget(form.value_rating, { 'id': 'rating_value' }) }}
-    {{ form_errors(form.value_rating) }}
     
     {{ form_end(form) }}
     <div class="page-index"> 
