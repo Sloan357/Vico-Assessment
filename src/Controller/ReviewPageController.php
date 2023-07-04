@@ -115,10 +115,10 @@ class ReviewPageController extends AbstractController
                 $em->persist($optionalReview);
                 $em->flush();
 
-                dump($review);
-                dump($optionalReview);
-                die();
-            // return $this->redirectToRoute('app_review_second_page');
+                // dump($review);
+                // dump($optionalReview);
+                // die();
+            return $this->redirectToRoute('success_page');
         }
 
         return $this->render('review_page/second-page.html.twig', [
@@ -126,5 +126,19 @@ class ReviewPageController extends AbstractController
             'vicoName' => $vicoName,
             'projectTitle' => $projectTitle
         ]);
+    }
+
+    #[Route('/success', name: 'success_page')]
+    public function successPage(EntityManagerInterface $em): Response
+    {
+        $reviewRepo = $em->getRepository(Review::class);
+        $review = $reviewRepo->findOneBy(['id' => 1]);
+
+        $optionalReviewRepo = $em->getRepository(OptionalReview::class);
+        $optionalReview = $optionalReviewRepo->findOneBy(['review' => $review]);
+
+        dump($review);
+        dump($optionalReview);
+        die();
     }
 }

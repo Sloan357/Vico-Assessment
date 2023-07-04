@@ -4,9 +4,18 @@ const raitingContainers = document.querySelectorAll('.star-rating-container');
 raitingContainers.forEach(function(container) {
   // Get all star elements
   const stars = container.querySelectorAll('.star-rating span');
+  let initialRating = 0;
+
+  if (container.querySelector('#rating_value')) {
+    initialRating = container.querySelector('#rating_value').value;
+  }
 
   // Attach click event listener to each star
   stars.forEach((star) => {
+    if (star.dataset.value <= initialRating) {
+      star.classList.add('selected');
+    }
+
     star.addEventListener('click', () => {
       // Remove 'selected' class from all stars
       stars.forEach((star) => {

@@ -78,6 +78,17 @@ body {
             }
         }
     }
+
+    .navigation-buttons {
+        display: flex;
+        justify-content: space-between;
+        .back-button, .skip-button {
+            text-decoration: none;
+            color: blueviolet;
+        }
+    }
+    
+
     .page-index {
         text-align: center;
         margin-top: 15px;
