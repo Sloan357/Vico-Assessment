@@ -86,6 +86,12 @@ class ReviewPageController extends AbstractController
     #[Route('/review/second-page', name: 'app_review_second_page')]
     public function secondPage(Request $request, EntityManagerInterface $em): Response
     {
+        $reviewRepo = $em->getRepository(Review::class);
+
+        if(!$reviewRepo->findOneBy(['id' => 1])) {
+            return $this->redirectToRoute('app_review_second_page');
+        }
+        
         $vicoRepo = $em->getRepository(Vico::class);
 
         $projectRepo = $em->getRepository(Project1::class);
@@ -93,10 +99,8 @@ class ReviewPageController extends AbstractController
         $vicoName = $vicoRepo->findOneBy(['id' => '1'])->getName();
         $projectTitle = $projectRepo->findOneBy(['id' => '1'])->getTitle();
 
-        $reviewRepo = $em->getRepository(Review::class);
-      
         $review = $reviewRepo->findOneBy(['id' => 1]);
-
+    
         $optionalReviewRepo = $em->getRepository(OptionalReview::class);
 
         if ($optionalReviewRepo->findOneBy(['review' => $review])) {
