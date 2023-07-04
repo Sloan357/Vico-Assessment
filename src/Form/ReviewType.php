@@ -31,24 +31,6 @@ class ReviewType extends AbstractType
                     'class' => 'review-text-area'
                 ]
             ])
-            // ->add('communication_rating', RangeType::class, [
-            //     'attr' => [
-            //         'Bad' => 1,
-            //         'Excellent' => 5
-            //     ],
-            // ])
-            // ->add('quality_rating', RangeType::class, [
-            //     'attr' => [
-            //         'Bad' => 1,
-            //         'Excellent' => 5
-            //     ],
-            // ])
-            // ->add('value_rating', RangeType::class, [
-            //     'attr' => [
-            //         'Bad' => 1,
-            //         'Excellent' => 5
-            //     ],
-            // ])
             ->add('Next', SubmitType::class)
         ;
     }

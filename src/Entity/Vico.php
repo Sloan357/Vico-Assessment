@@ -26,6 +26,9 @@ class Vico
     #[ORM\OneToMany(mappedBy: 'vico_id', targetEntity: Project1::class)]
     private Collection $project1s;
 
+    #[ORM\OneToOne(mappedBy: 'vico_id', cascade: ['persist', 'remove'])]
+    private ?Review $review = null;
+
     public function __construct()
     {
         $this->project1s = new ArrayCollection();
@@ -85,6 +88,28 @@ class Vico
                 $project1->setVicoId(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getReview(): ?Review
+    {
+        return $this->review;
+    }
+
+    public function setReview(?Review $review): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($review === null && $this->review !== null) {
+            $this->review->setVicoId(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($review !== null && $review->getVicoId() !== $this) {
+            $review->setVicoId($this);
+        }
+
+        $this->review = $review;
 
         return $this;
     }

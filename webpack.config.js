@@ -23,6 +23,7 @@ Encore
     .addEntry('app', './assets/app.js')
     .addEntry('review_page', './assets/firstPage.js')
     .addStyleEntry('app_review_page', './assets/styles/firstPage.scss')
+    .addStyleEntry('app_review_second_page', './assets/styles/secondPage.scss')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()

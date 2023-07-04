@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Client;
+use App\Entity\OptionalReview;
 use App\Entity\Project1;
 use App\Entity\Review;
 use App\Entity\Vico;
+use App\Form\OptionalReviewType;
 use App\Form\ReviewType;
 use App\Manager\ReviewManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -34,17 +36,14 @@ class ReviewPageController extends AbstractController
 
         if (!$clientRepo->findAll()) {
             $this->reviewManager->createNewClient($em);
-            // var_dump('client created');
         }
 
         if (!$vicoRepo->findAll()) {
             $this->reviewManager->createNewVico($em);
-            // var_dump('vico created');
         }
 
         if (!$projectRepo->findAll()) {
             $this->reviewManager->createNewProject($em, $clientRepo, $vicoRepo);
-            // var_dump('project created');
         }
         //the code far is due to the task being a challenge and not part of a full workflow, this would be replaced
         //by retrieving the client, vico and project info from the DB and session leading to the review page
@@ -53,15 +52,15 @@ class ReviewPageController extends AbstractController
         $vicoName = $vicoRepo->findOneBy(['id' => '1'])->getName();
         $projectTitle = $projectRepo->findOneBy(['id' => '1'])->getTitle();
 
-        // $reviewRepo = $em->getRepository(Review::class);
+        $reviewRepo = $em->getRepository(Review::class);
 
-        // if ($reviewRepo->find('1')) {
-        //     // $review = $reviewRepo->findOneBy(['project_id' => '1']);
-        //     var_dump($projectRepo->findOneBy(['id' => '1']));die();
-        // } else {
-        // }
+        if ($reviewRepo->find('1')) {
+            // $review = $reviewRepo->findOneBy(['project_id' => '1']);
+            var_dump($projectRepo->findOneBy(['id' => '1']));die();
+        } else {
+            $review = new Review();
+        }
 
-        $review = new Review();
         $form = $this->createForm(ReviewType::class, $review);
 
         $form->handleRequest($request);
@@ -74,8 +73,6 @@ class ReviewPageController extends AbstractController
             
                 $em->persist($review);
                 $em->flush();
-
-            // ... perform some action
 
             return $this->redirectToRoute('app_review_second_page');
         }
@@ -90,6 +87,36 @@ class ReviewPageController extends AbstractController
     #[Route('/review/second-page', name: 'app_review_second_page')]
     public function secondPage(Request $request, EntityManagerInterface $em): Response
     {
-        var_dump('yo');die();
+        $vicoRepo = $em->getRepository(Vico::class);
+
+        $projectRepo = $em->getRepository(Project1::class);
+
+        $vicoName = $vicoRepo->findOneBy(['id' => '1'])->getName();
+        $projectTitle = $projectRepo->findOneBy(['id' => '1'])->getTitle();
+
+        $reviewRepo = $em->getRepository(Review::class);
+      
+        $review = $reviewRepo->findOneBy(['id' => 1]);
+
+        $optionalReview = new OptionalReview;
+        
+        $form = $this->createForm(OptionalReviewType::class, $optionalReview);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $optionalReview = $form->getData();
+            $optionalReview->setReview($review);
+            
+                $em->persist($optionalReview);
+                $em->flush();
+
+            // return $this->redirectToRoute('app_review_second_page');
+        }
+
+        return $this->render('review_page/second-page.html.twig', [
+            'form' => $form,
+            'vicoName' => $vicoName,
+            'projectTitle' => $projectTitle
+        ]);
     }
 }

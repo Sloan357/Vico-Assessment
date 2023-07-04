@@ -35,6 +35,9 @@ class Client
     #[ORM\OneToMany(mappedBy: 'creator_id', targetEntity: Project1::class)]
     private Collection $project1s;
 
+    #[ORM\OneToOne(mappedBy: 'creator_id', cascade: ['persist', 'remove'])]
+    private ?Review $review = null;
+
     public function __construct()
     {
         $this->project1s = new ArrayCollection();
@@ -129,6 +132,28 @@ class Client
                 $project1->setCreatorId(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getReview(): ?Review
+    {
+        return $this->review;
+    }
+
+    public function setReview(?Review $review): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($review === null && $this->review !== null) {
+            $this->review->setCreatorId(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($review !== null && $review->getCreatorId() !== $this) {
+            $review->setCreatorId($this);
+        }
+
+        $this->review = $review;
 
         return $this;
     }
